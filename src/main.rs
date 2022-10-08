@@ -3,7 +3,7 @@ use rand::{RngCore, rngs::OsRng};
 
 fn main() {
 
-    // ## create "key"
+    // create "key"
     let ranum = OsRng.next_u32();
     let size_ran: usize = (3 + ranum % 4) as usize;
     let mut secret_a:Vec<u8> = vec![0; size_ran];
@@ -11,18 +11,21 @@ fn main() {
     // let secret_len = secret_a.len();
     // println!("`secret_a`:{secret_len}|{secret_a:?}");
 
+    // create initial message which length or content should be attacked
     let mut hasher = Md4::new();
     hasher.update(&secret_a);
     hasher.update(b"comment1=cooking%20MCs;userdata=foo;comment2=%20like%20a%20pound%20of%20bacon");
     let mes_orig = hasher.finalize();
     println!("mes_orig:{mes_orig:?}");
 
+    // create target message, identical to which attacker should get to pass MAC verification
     let mut hasher = Md4::new();
     hasher.update(padding_md(&[secret_a, b"comment1=cooking%20MCs;userdata=foo;comment2=%20like%20a%20pound%20of%20bacon".to_vec()].concat()));
     hasher.update(b";admin=true");
     let mes_target = hasher.finalize();
     println!("mes_target:{mes_target:?}");
 
+    // solution; forging the message and its MAC
     let hasher_core = Md4Core{block_len: 2, state: [
         u32::from_le_bytes(mes_orig[0..=3].try_into().unwrap()),
         u32::from_le_bytes(mes_orig[4..=7].try_into().unwrap()),

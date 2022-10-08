@@ -10,4 +10,4 @@ md4 = "0.10.2"
 rand = "*"
 
 [patch.crates-io]
-md4 = {path = "../RustCrypto/hashes/md4"}
+md4 = {git = "https://github.com/skaunov/hashes.git"}

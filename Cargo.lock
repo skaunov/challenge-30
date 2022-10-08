@@ -75,6 +75,7 @@ checksum = "329c933548736bc49fd575ee68c89e8be4d260064184389a5b77517cddd99ffb"
 [[package]]
 name = "md4"
 version = "0.10.2"
+source = "git+https://github.com/skaunov/hashes.git#be8cca600099a973120e4cbdd56ad0313dad8dc5"
 dependencies = [
  "digest",
 ]
